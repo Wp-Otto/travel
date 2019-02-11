@@ -8,22 +8,18 @@
 namespace Calendar\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Calendar\Model\LeapYear;
 
 class LeapYearController
 {
     public function indexAction(Request $request, $year)
     {
-        if (is_leap_year($request->attributes->get('year'))) {
-            //        添加属性  可用于模板中
-            $request->attributes->set('desc', 'Yep, this is a leap year!');
-        }else {
-            $request->attributes->set('desc', 'Nope, this is not a leap year.');
+        $leapyear = new LeapYear();
+        if ($leapyear->isLeapYear($year)) {
+            return new Response('Yep, this is a leap year!');
         }
 
-        $response = render_template($request);
-
-        //        修改头信息
-        $response->headers->set('Content-Type', 'text/html');
-        return $response;
+        return new Response('Nope, this is not a leap year.');
     }
 }
