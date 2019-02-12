@@ -32,6 +32,15 @@ $dispatcher->addListener('response', function (Simplex\ResponseEvent $event){
    $response->setContent($response->getContent().'GA CODE');
 });
 
+$dispatcher->addListener('response', function (Simplex\ResponseEvent $event) {
+    $response = $event->getResponse();
+    $headers = $response->headers;
+
+    if (!$headers->has('Content-Length') && !$headers->has('Transfer-Encoding')) {
+        $headers->set('Content-Length', strlen($response->getContent()));
+    }
+});
+
 $controllerResolver = new ControllerResolver();
 $argumentResolver = new ArgumentResolver();
 
