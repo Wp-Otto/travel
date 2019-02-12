@@ -22,24 +22,8 @@ $context = new Routing\RequestContext();
 $matcher = new Routing\Matcher\UrlMatcher($routes, $context);
 
 $dispatcher = new EventDispatcher();
-$dispatcher->addListener('response', function (Simplex\ResponseEvent $event){
-   $response = $event->getResponse();
-
-   if ($response->isRedirection() || ($response->headers->has('Content-Type') && false === strpos($response->headers->get('Content-Type'),'html')) || 'html' !== $event->getRequest()->getRequestFormat()){
-       return;
-   }
-
-   $response->setContent($response->getContent().'GA CODE');
-});
-
-$dispatcher->addListener('response', function (Simplex\ResponseEvent $event) {
-    $response = $event->getResponse();
-    $headers = $response->headers;
-
-    if (!$headers->has('Content-Length') && !$headers->has('Transfer-Encoding')) {
-        $headers->set('Content-Length', strlen($response->getContent()));
-    }
-});
+$dispatcher->addListener('response', array(new Simplex\GoogleListener(), 'onResponse'));
+$dispatcher->addListener('response', array(new Simplex\ContentLengthListener(), 'onResponse'));
 
 $controllerResolver = new ControllerResolver();
 $argumentResolver = new ArgumentResolver();
