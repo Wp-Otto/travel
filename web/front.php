@@ -22,8 +22,8 @@ $context = new Routing\RequestContext();
 $matcher = new Routing\Matcher\UrlMatcher($routes, $context);
 
 $dispatcher = new EventDispatcher();
-$dispatcher->addListener('response', array(new Simplex\GoogleListener(), 'onResponse'));
-$dispatcher->addListener('response', array(new Simplex\ContentLengthListener(), 'onResponse'));
+$dispatcher ->addSubscriber(new Simplex\GoogleListener());
+$dispatcher ->addSubscriber(new Simplex\ContentLengthListener());
 
 $controllerResolver = new ControllerResolver();
 $argumentResolver = new ArgumentResolver();
