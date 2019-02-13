@@ -17,9 +17,14 @@ class LeapYearController
     {
         $leapyear = new LeapYear();
         if ($leapyear->isLeapYear($year)) {
-            return new Response('Yep, this is a leap year!');
+            $response = new Response('Yep, this is a leap year!'.mt_rand(1000,9999));
+        }else {
+
+            $response = new Response('Nope, this is not a leap year.'.mt_rand(1000,9999));
         }
 
-        return new Response('Nope, this is not a leap year.');
+        $response->setTtl(10);
+
+        return $response;
     }
 }
