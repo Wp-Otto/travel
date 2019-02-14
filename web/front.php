@@ -23,11 +23,11 @@ $sc->setParameter('routes', include __DIR__.'/../src/app.php');
 
 $framework = $sc->get('framework');
 
-$framework = new HttpCache(
-    $framework,
-    new Store(__DIR__.'/../cache'),
-    new Esi(),
-    array('debug' => true)
-);
+//$framework = new HttpCache(
+//    $framework,
+//    new Store(__DIR__.'/../cache'),
+//    new Esi(),
+//    array('debug' => true)
+//);
 
 $framework->handle($request)->send();
